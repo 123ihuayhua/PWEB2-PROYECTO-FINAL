@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'encabezado.html' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</section>
+<main class="container py-5">
+    <section class="card card-body">
+        <h1 class="display-4 text-center mb-4 fw-bold">{{ marca.MarNom }}</h1>
+    </section>
+</main>
+<div class="d-flex flex-wrap justify-content-center">
+    {% for art in arts %}
+    {% if art.ArtMarCod == marca %}
+    <div class="card m-3" style="width: 250px;">
+        <img src="{{ art.ArtImg.url }}" class="card-img-top img-fluid" alt="{{ art.ArtNom }}">
+        <div class="card-body">
+            <h2 class="card-title h5 fw-bold">{{ art.ArtNom }}</h2>
+            <p class="card-text fw-bold">S/.{{ art.ArtPreUni }}</p>
+            <p class="card-text fw-bold">Stock: {{ art.ArtSto }}</p>
+            <p class="card-text description" style="display: none;">{{ art.ArtDes }}</p>
+        </div>
+        {% if art.ArtSto > 0 %}
+        <div class="card-footer d-flex justify-content-between bg-dark">
+            <button class="btn btn-warning" onclick="toggleDescription(this)">Mostrar Descripción</button>
+            <button class="btn btn-primary" onclick="agregarAlCarrito({{ art.id }})">
+                <i class="bi bi-cart-plus"></i>
+            </button>
+        </div>
+        {% else %}
+        <div class="card-footer bg-danger text-white">
+            <p class="card-text fw-bold" style="transform: rotate(0 deg);">Sin stock</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<script>
+    function toggleDescription(button) {
+        var cardBody = button.parentNode.parentNode.querySelector('.card-body');
+        var description = cardBody.querySelector('.description');
+
+        if (description.style.display === 'none') {
+            description.style.display = 'block';
+            button.textContent = 'Ocultar Descripción';
+        } else {
+            description.style.display = 'none';
+            button.textContent = 'Mostrar Descripción';
+        }
+    }
+
+    function agregarAlCarrito(articuloId) {
+        {% if user.is_authenticated %}
+        fetch(`/carrito/agregar_al_carrito/${articuloId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto agregado al carrito',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'my-swal-popup'
+                        },
+                        backdrop: `
+            rgba(0,0,123,0.4)
+            url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+            center center
+            no-repeat
+          `
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al agregar el producto al carrito',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'my-swal-popup'
+                        },
+                        backdrop: `
+            rgba(255,0,0,0.4)
+            url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+            center center
+            no-repeat
+          `
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        {% else %}
+        Swal.fire({
+            icon: 'warning',
+            title: 'Debes iniciar sesión para agregar productos al carrito',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            customClass: {
+            popup: 'my-swal-popup'
+          },
+            backdrop: `
+      rgba(255,165,0,0.4)
+      url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+      center center
+      no-repeat
+    `
+        }).then(() => {
+            window.location.href = '/signin/';
+        });
+        {% endif %}
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+{% endblock %}

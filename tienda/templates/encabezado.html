@@ -1,0 +1,80 @@
+{% load static %}
+<section>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex justify-content-around" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=1 %}">
+                            <img src="{% static 'img/acer.svg' %}" class="rounded img-fluid" alt="acer" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=2 %}">
+                            <img src="{% static 'img/apple.svg' %}" class="rounded img-fluid" alt="apple" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=3 %}">
+                            <img src="{% static 'img/asus.svg' %}" class="rounded img-fluid" alt="asus" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=4 %}">
+                            <img src="{% static 'img/dell.svg' %}" class="rounded img-fluid" alt="dell" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=5 %}">
+                            <img src="{% static 'img/hp.svg' %}" class="rounded img-fluid" alt="hp" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=6 %}">
+                            <img src="{% static 'img/lenovo.svg' %}" class="rounded img-fluid" alt="lenovo" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=7 %}">
+                            <img src="{% static 'img/msi.svg' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=8 %}">
+                            <img src="{% static 'img/corsair-logo.png' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=9 %}">
+                            <img src="{% static 'img/teros-logo.png' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=10 %}">
+                            <img src="{% static 'img/Thermaltake.svg' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=11 %}">
+                            <img src="{% static 'img/Microsoft.svg' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=12 %}">
+                            <img src="{% static 'img/logintech.png' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'marca_detail' marca_id=13 %}">
+                            <img src="{% static 'img/JBL_Logo.png' %}" class="rounded img-fluid" alt="msi" style="width: 60px; height: 40px;">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</section>

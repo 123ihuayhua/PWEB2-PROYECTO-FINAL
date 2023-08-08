@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+<div class="banner">
+    <img src="{% static '/img/logo3.jpg' %}" alt="Imagen del banner" style="max-width: 100%; max-height: 30%;">
+    <h1 class="text-center text-warning text-uppercase fw-bolder"
+        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Carrito de Compras</h1>
+</div>
+<div>
+    {% if messages %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="container">
+    <br>
+    {% csrf_token %}
+    {% if carrito %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in carrito %}
+            <tr>
+                <td>{{ item.articulo.ArtNom }}</td>
+                <td>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary" type="button"
+                            onclick="restarCantidad({{ item.pk }})">-</button>
+                        <input type="number" class="form-control" value="{{ item.cantidad }}" min="1"
+                            max="{{ item.articulo.ArtSto }}" onchange="actualizarCantidad({{ item.pk }}, this.value)">
+                        <button class="btn btn-outline-secondary" type="button"
+                            onclick="sumarCantidad({{ item.pk }}, {{ item.articulo.ArtSto }})">+</button>
+                    </div>
+                </td>
+                <td>S/.{{ item.articulo.ArtPreUni }}</td>
+                <td>S/.{{ item.subtotal }}</td>
+                <td>
+                    <a href="{% url 'eliminar_del_carrito' item.pk %}" class="btn btn-danger"
+                        onclick="eliminarProducto({{ item.pk }})">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td>Total:</td>
+                <td>S/.{{ total }}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="d-flex justify-content-around">
+        <a href="{% url 'productos' %}" class="btn btn-primary">Seguir comprando</a>
+        <button class="btn btn-success" onclick="guardarPedido()">Guardar pedido</button>
+        <button class="btn btn-danger" onclick="cancelarCarrito()">Cancelar</button>
+    </div>
+    {% else %}
+    <br>
+    <p>No hay productos en el carrito.</p>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'info',
+            title: 'Carrito vacío',
+            text: 'No hay productos en el carrito.',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    {% endif %}
+</div>
+<br>
+<script>
+    function sumarCantidad(itemPk, maxCantidad) {
+        var inputCantidad = document.querySelector(`[data-item-pk="${itemPk}"]`);
+        var cantidad = parseInt(inputCantidad.value);
+        if (cantidad < maxCantidad) {
+            cantidad++;
+            inputCantidad.value = cantidad;
+            actualizarCantidad(itemPk, cantidad);
+        }
+    }
+
+    function restarCantidad(itemPk) {
+        var inputCantidad = document.querySelector(`[data-item-pk="${itemPk}"]`);
+        var cantidad = parseInt(inputCantidad.value);
+        if (cantidad > 1) {
+            cantidad--;
+            inputCantidad.value = cantidad;
+            actualizarCantidad(itemPk, cantidad);
+        }
+    }
+
+    function actualizarCantidad(itemPk, cantidad) {
+        fetch(`/carrito/actualizar_cantidad/${itemPk}/${cantidad}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Error:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    function eliminarProducto(itemPk) {
+        event.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: '¿Estás seguro de que quieres eliminar este producto del carrito?',
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'No, cancelar',
+            reverseButtons: true,
+            timer: null
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/carrito/eliminar_del_carrito/${itemPk}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({})
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            swalWithBootstrapButtons.fire({
+                                icon: 'success',
+                                title: 'El producto ha sido eliminado del carrito.',
+                                showConfirmButton: true,
+                                backdrop: `rgba(30, 12, 204, 0.49)
+                                url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+                                center center
+                                no-repeat`
+
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            console.error('Error:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire({
+                    icon: 'error',
+                    title: 'El producto no ha sido eliminado del carrito.',
+                    backdrop: `rgba(255, 47, 79, 0.42)
+                                url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+                                center center
+                                no-repeat`
+                });
+            }
+        });
+    }
+    function guardarPedido() {
+        fetch('/carrito/guardar_pedido/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'El pedido ha sido guardado exitosamente.',
+                        showConfirmButton: true,
+                        backdrop: `rgba(0, 128, 0, 0.49)
+                                url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+                                center center
+                                no-repeat`
+                    }).then(() => {
+                        location.href = '{% url "guardar_pedido" %}';
+                    });
+                } else {
+                    console.error('Error:', response.statusText);
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al guardar el pedido',
+                    text: 'La cantidad en el pedido supera el stock disponible.',
+                    showConfirmButton: true
+                });
+                console.error('Error:', error);
+            });
+    }
+
+    function cancelarCarrito() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: '¿Estás seguro de que quieres cancelar el carrito?',
+            text: 'Se eliminarán todos los productos del carrito.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'No, mantener',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/carrito/cancelar_carrito/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({})
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            swalWithBootstrapButtons.fire({
+                                icon: 'success',
+                                title: 'El carrito ha sido cancelado.',
+                                showConfirmButton: true,
+                                backdrop: `rgba(30, 12, 204, 0.49)
+                                url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+                                center center
+                                no-repeat`
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            console.error('Error:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    icon: 'error',
+                    title: 'El carrito no ha sido cancelado.',
+                    backdrop: `rgba(255, 47, 79, 0.42)
+                                url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif")
+                                center center
+                                no-repeat`
+                });
+            }
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+{% endblock %}

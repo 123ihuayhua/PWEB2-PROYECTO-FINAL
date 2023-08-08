@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="container">
+    <h2 class="text-center fw-bolder">DATOS DEL PEDIDO</h2>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th scope="row">CLIENTE</th>
+          <td>{{ pedido.PedCabCodCli }}</td>
+        </tr>
+        <tr>
+          <th scope="row">FECHA</th>
+          <td>{{ pedido.PedCabFec }}</td>
+        </tr>
+        <tr>
+          <th scope="row">TOTAL</th>
+          <td>S/. {{ pedido.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th>Artículo</th>
+          <th>Cantidad</th>
+          <th>Precio unitario</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for carrito in detalles %}
+        <tr>
+          <td>{{ carrito.articulo }}</td>
+          <td>{{ carrito.cantidad }}</td>
+          <td>S/. {{ carrito.precio_uni }}</td>
+          <td>S/. {{ carrito.subtotal }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

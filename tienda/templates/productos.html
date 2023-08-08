@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- Marcas -->
+<h3 class="mt-5 mb-5 text-center">Marcas</h3>
+<div class="row row-cols-1 row-cols-md-4 g-1">
+    {% for marc in marcas %}
+    <div class="col mb-4">
+        <div class="card shadow-sm">
+            <a href="{% url 'marca_detail' marca_id=marc.pk %}">
+                <div class="rounded-circle overflow-hidden mx-auto d-flex justify-content-center align-items-center" style="width: 150px; height: 150px;">
+                    <img src="{{ marc.MarImg.url }}" class="card-img-top" alt="">
+                </div>
+            </a>
+        </div>
+    </div>
+    {% if forloop.counter|divisibleby:4 and not forloop.last %}
+        </div><div class="row row-cols-1 row-cols-md-4 g-6">
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

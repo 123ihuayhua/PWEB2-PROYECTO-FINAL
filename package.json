@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bootstrap-icons": "^1.10.5",
+    "noty": "^3.2.0-beta-deprecated"
+  }
+}

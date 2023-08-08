@@ -1,0 +1,69 @@
+{% load static %}
+<footer class="text-center text-lg-start text-white" style="background-color: black">
+    <!-- Grid container -->
+    <div class="container ">
+        <!-- Section: Links -->
+        <section class="">
+            <!--Grid row-->
+            <div class="row">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-5">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">
+                       LaPC
+                    </h6>
+                    <p>
+                        En nuestra empresa, nos dedicamos a ofrecer soluciones tecnológicas de alta calidad para satisfacer las necesidades de nuestros clientes. Nos enfocamos en la venta de laptops de última generación, brindando una amplia variedad de marcas y modelos para que nuestros clientes puedan encontrar la opción que mejor se adapte a sus necesidades. 
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+                <hr class="w-100 clearfix d-md-none" />
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-5">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Marcas</h6>
+                    <li><a href="{% url 'marca_detail' marca_id=1 %}" class="text-white" style="text-decoration:none">Acer</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=2 %}" class="text-white" style="text-decoration:none">Apple</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=3 %}" class="text-white" style="text-decoration:none">Asus</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=4 %}" class="text-white" style="text-decoration:none">Dell</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=5 %}" class="text-white" style="text-decoration:none">HP</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=6 %}" class="text-white" style="text-decoration:none">Lenovo</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=7 %}" class="text-white" style="text-decoration:none">MSI</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=8 %}" class="text-white" style="text-decoration:none">Corsair</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=9 %}" class="text-white" style="text-decoration:none">Teros</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=10 %}" class="text-white" style="text-decoration:none">Thermaltake</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=11 %}" class="text-white" style="text-decoration:none">Microsoft</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=12 %}" class="text-white" style="text-decoration:none">Logitech</a></li>
+                    <li><a href="{% url 'marca_detail' marca_id=13 %}" class="text-white" style="text-decoration:none">JBL</a></li>
+                </div>
+                <!-- Grid column -->
+
+                <hr class="w-100 clearfix d-md-none" />
+
+                <!-- Grid column -->
+                <hr class="w-100 clearfix d-md-none" />
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-5">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Contactos</h6>
+                    <p><i class="fas fa-home mr-3"></i> Av.Alianza 430, ASA, Arequipa</p>
+                    <p><i class="fas fa-envelope mr-3"></i> LaPC@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> +51 931316402</p>
+                    <p><i class="fas fa-print mr-3"></i> +51 965789531</p>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-5">
+                    <img src="{% static '/img/logo.png' %}" alt="">
+                </div>
+            </div>
+        </section>
+ 
+    </div>
+  
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        © 2023 Copyright:
+        <a class="text-white" href="/">lapc.com</a>
+    </div>
+
+</footer>

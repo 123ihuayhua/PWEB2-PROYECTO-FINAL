@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center mt-3 mb-3 display-3 text-primary fw-bolder">MIS PEDIDOS</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered text-center">
+                            <thead class="thead-dark table-dark">
+                                <tr>
+                                    <th class="col-4">CLIENTE</th>
+                                    <th class="col-4">FECHA PEDIDO</th>
+                                    <th class="col-4">DETALLES</th>
+                                    <th class="col-4">ESTADO REGISTRO</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-light">
+                                {% for pedido in pedidos %}
+                                    <tr>
+                                        <td class="col-4">{{ pedido.PedCabCodCli }}</td>
+                                        <td class="col-4">{{ pedido.PedCabFec }}</td>
+                                        <td class="col-4">
+                                            {% if pedido.PedDetEstReg == False %}
+                                                <a href="{% url 'pedido_detalle' pedido.id %}">
+                                                    <button type="button" class="btn btn-info  btn-rounded" >
+                                                        VER PEDIDO
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'pedido_detalle' pedido.id %}">
+                                                    <button type="button" class="btn btn-info  btn-rounded" >
+                                                        VER 
+                                                    </button>
+                                                </a>
+                                                <a href="{% url 'eliminar_pedido' pedido.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-rounded ">
+                                                        CANCELAR 
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="col-4">{{ pedido.PedDetEstReg}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+{% endblock %}

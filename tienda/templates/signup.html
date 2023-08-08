@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="vh-130" style="background-color: #eee;">
+    <div class="container h-80">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+              <div class="card-body p-md-5">
+                <div class="row justify-content-center">
+                  <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+    
+                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                      <ul>
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    {% endif %}
+                    <form class="mx-1 mx-md-4" action="/signup/" method="POST">
+                        {% csrf_token %}
+                        <!-- Nombre  -->
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label" id="id_CliNom">Name</label>
+                            <input type="text" name="CliNom" id="id_CliNom" class="form-control" placeholder="Write your Name"/>
+                        </div>
+                      </div>
+                      <!-- Apellido -->
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label" id="id_CliApePat">Surname</label>
+                            <input type="text" name="CliApePat" id="id_CliApePat" class="form-control" placeholder="Write your Surname"/>
+                        </div>
+                      </div>
+                      <!-- dni  -->
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label" id="id_CliDNI">DNI</label>
+                            <input type="number" maxlength="8" name="CliDNI" id="id_CliDNI" class="form-control" placeholder="Write your Surname"/>
+                        </div>
+                      </div>
+                      <!-- Usuario  -->
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label" id="id_username">Username</label>
+                            <input type="text"  name="username" id="id_username" class="form-control" placeholder="Write your Surname"/>
+                        </div>
+                      </div>
+                      <!-- Contraseña -->
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label" for="id_password1">Password</label>
+                            <input type="password" name="password1" id="id_password1" class="form-control" placeholder="Write your password"/>
+                        </div>
+                      </div>
+                      <!-- Contraseña2  -->
+                      <div class="d-flex flex-row align-items-center mb-4">
+                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                        <div class="form-outline flex-fill mb-0">
+                            <label class="form-label" for="id_password2">Password</label>
+                            <input type="password" name="password2" id="id_password2" class="form-control" placeholder="Repite your password"/>
+                        </div>
+                      </div>
+
+                      <!-- Boton Register  -->
+                      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                    <img src="{% static '/img/register.svg' %}"
+                      class="img-fluid" alt="Sample image">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+{% endblock  %}
